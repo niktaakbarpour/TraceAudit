@@ -1,0 +1,10 @@
+{
+  "schema_version": "traceaudit-classifier-output-v0.1",
+  "status": "classified",
+  "predictions": [{
+    "label_id": "SYNTHETIC_CATEGORY_A",
+    "citations": ["synthetic-episode-001:EVT:0001"],
+    "rationale": "Synthetic test only; cites synthetic-episode-001:EVT:0001."
+  }],
+  "abstain_reason": null
+}

@@ -1,0 +1,26 @@
+{
+  "episode_id": "synthetic-episode-001",
+  "task_instruction": "move the synthetic block to the marked synthetic region",
+  "events": [
+    {
+      "event_id": "synthetic-episode-001:EVT:0001",
+      "event_type": "end_effector_motion_segment",
+      "timestamps": {"verified": false, "start_s": null, "end_s": null, "source_values_s_unverified": [0.10, 0.50]},
+      "indices": {"frame_range": [11, 21], "transition_range": [0, 10]},
+      "measurements": {"path_length_m": 0.04, "synthetic_fixture": true},
+      "evidence": [{"frame_index": null, "hdf5_path": "transitions/000000/executed_action/value", "hdf5_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "mapped_post_action_frame": 11, "mapping_note": "synthetic test mapping only", "transition_index": 0}],
+      "provenance": {"source_trace": "synthetic_only.json", "time_basis": "synthetic_source_time", "classification": "synthetic test measurement", "semantic_note": "no scientific observation"},
+      "quality_flags": ["semantic_uncertainty"]
+    },
+    {
+      "event_id": "synthetic-episode-001:EVT:0002",
+      "event_type": "gripper_command_run",
+      "timestamps": {"verified": false, "start_s": null, "end_s": null, "source_values_s_unverified": [0.40, 0.80]},
+      "indices": {"frame_range": [18, 29], "transition_range": [7, 18]},
+      "measurements": {"commanded_steps": 12, "component_index": 6, "synthetic_fixture": true},
+      "evidence": [{"frame_index": null, "hdf5_path": "transitions/000007/executed_action/value", "hdf5_sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb", "mapped_post_action_frame": 18, "mapping_note": "synthetic test mapping only", "transition_index": 7}],
+      "provenance": {"source_trace": "synthetic_only.json", "time_basis": "synthetic_source_time", "classification": "synthetic test measurement", "semantic_note": "no scientific observation"},
+      "quality_flags": []
+    }
+  ]
+}

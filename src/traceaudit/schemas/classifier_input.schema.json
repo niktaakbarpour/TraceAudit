@@ -1,0 +1,339 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://traceaudit.local/schemas/classifier_input_v0_1.schema.json",
+  "title": "TraceAudit outcome-blinded classifier request",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "episode_id",
+    "task_instruction",
+    "outcome_blinded",
+    "events"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "traceaudit-classifier-input-v0.1"
+    },
+    "episode_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "task_instruction": {
+      "type": "string",
+      "minLength": 1
+    },
+    "outcome_blinded": {
+      "const": true
+    },
+    "events": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "oneOf": [
+          {
+            "$ref": "#/$defs/availableEvent"
+          },
+          {
+            "$ref": "#/$defs/unavailableEvent"
+          }
+        ]
+      }
+    }
+  },
+  "$defs": {
+    "sourceTimestamps": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "verified",
+        "start_s",
+        "end_s",
+        "source_values_s_unverified"
+      ],
+      "properties": {
+        "verified": {
+          "const": false
+        },
+        "start_s": {
+          "type": "null"
+        },
+        "end_s": {
+          "type": "null"
+        },
+        "source_values_s_unverified": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 2,
+          "items": {
+            "type": "number"
+          }
+        }
+      }
+    },
+    "indices": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "frame_range",
+        "transition_range"
+      ],
+      "properties": {
+        "frame_range": {
+          "$ref": "#/$defs/inclusiveRange"
+        },
+        "transition_range": {
+          "$ref": "#/$defs/inclusiveRange"
+        }
+      }
+    },
+    "inclusiveRange": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 2,
+          "items": {
+            "type": "integer",
+            "minimum": 0
+          }
+        }
+      ]
+    },
+    "evidence": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "frame_index",
+          "hdf5_path",
+          "hdf5_sha256",
+          "mapped_post_action_frame",
+          "mapping_note",
+          "transition_index"
+        ],
+        "properties": {
+          "frame_index": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "hdf5_path": {
+            "type": "string",
+            "minLength": 1
+          },
+          "hdf5_sha256": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "mapped_post_action_frame": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 0
+          },
+          "mapping_note": {
+            "type": "string",
+            "minLength": 1
+          },
+          "transition_index": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 0
+          }
+        }
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source_trace",
+        "time_basis",
+        "classification"
+      ],
+      "properties": {
+        "source_trace": {
+          "type": "string",
+          "minLength": 1
+        },
+        "time_basis": {
+          "type": "string",
+          "minLength": 1
+        },
+        "classification": {
+          "type": "string",
+          "minLength": 1
+        },
+        "semantic_note": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "uncertaintyFlag": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "semantic_status",
+        "evidence_link_status"
+      ],
+      "properties": {
+        "semantic_status": {
+          "enum": [
+            "uncertain",
+            "not_assessed"
+          ]
+        },
+        "evidence_link_status": {
+          "enum": [
+            "resolved",
+            "not_assessed"
+          ]
+        }
+      }
+    },
+    "commonEvent": {
+      "type": "object",
+      "required": [
+        "event_id",
+        "availability",
+        "timestamps",
+        "indices"
+      ],
+      "properties": {
+        "event_id": {
+          "type": "string",
+          "pattern": "^.+:EVT:[0-9]{4}$"
+        },
+        "availability": {
+          "enum": [
+            "available",
+            "unavailable"
+          ]
+        },
+        "timestamps": {
+          "$ref": "#/$defs/sourceTimestamps"
+        },
+        "indices": {
+          "$ref": "#/$defs/indices"
+        }
+      }
+    },
+    "availableEvent": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/commonEvent"
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "event_id",
+            "availability",
+            "event_type",
+            "timestamps",
+            "indices",
+            "measurements",
+            "evidence",
+            "provenance",
+            "quality_flags"
+          ],
+          "properties": {
+            "event_id": {
+              "type": "string",
+              "pattern": "^.+:EVT:[0-9]{4}$"
+            },
+            "availability": {
+              "const": "available"
+            },
+            "event_type": {
+              "enum": [
+                "gripper_command_run",
+                "end_effector_motion_segment",
+                "tracked_entity_position_change"
+              ]
+            },
+            "timestamps": {
+              "$ref": "#/$defs/sourceTimestamps"
+            },
+            "indices": {
+              "$ref": "#/$defs/indices"
+            },
+            "measurements": {
+              "type": "object"
+            },
+            "evidence": {
+              "$ref": "#/$defs/evidence"
+            },
+            "provenance": {
+              "$ref": "#/$defs/provenance"
+            },
+            "uncertainty_flag": {
+              "$ref": "#/$defs/uncertaintyFlag"
+            },
+            "quality_flags": {
+              "type": "array",
+              "items": {
+                "enum": [
+                  "semantic_uncertainty",
+                  "missing_data",
+                  "nonfinite_data",
+                  "abstention"
+                ]
+              }
+            }
+          }
+        }
+      ]
+    },
+    "unavailableEvent": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/commonEvent"
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "event_id",
+            "availability",
+            "unavailable_reason",
+            "timestamps",
+            "indices"
+          ],
+          "properties": {
+            "event_id": {
+              "type": "string",
+              "pattern": "^.+:EVT:[0-9]{4}$"
+            },
+            "availability": {
+              "const": "unavailable"
+            },
+            "unavailable_reason": {
+              "const": "single_event_withholding"
+            },
+            "timestamps": {
+              "$ref": "#/$defs/sourceTimestamps"
+            },
+            "indices": {
+              "$ref": "#/$defs/indices"
+            }
+          }
+        }
+      ]
+    }
+  }
+}

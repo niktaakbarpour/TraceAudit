@@ -1,0 +1,55 @@
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.coverage
+htmlcov/
+build/
+dist/
+*.egg-info/
+.venv/
+venv/
+
+# Secrets and local configuration
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+credentials*.json
+secrets.*
+
+# Research data and generated artifacts
+data/**
+!data/README.md
+results/**
+!results/README.md
+*.h5
+*.hdf5
+*.mp4
+*.mov
+*.avi
+*.mkv
+*.pt
+*.pth
+*.safetensors
+*.ckpt
+*.onnx
+*.parquet
+*.csv
+*.jsonl
+*.sqlite
+*.db
+*.tar
+*.tar.gz
+*.zip
+*.jpg
+*.jpeg
+*.png
+*.webp
+*.gif
+
+# Local editor and OS files
+.DS_Store
+.idea/
+.vscode/

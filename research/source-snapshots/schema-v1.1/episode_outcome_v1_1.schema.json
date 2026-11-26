@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://traceaudit.local/schemas/episode_outcome_v1_1.schema.json",
+  "title": "TraceAudit v1.1 evaluation-only episode outcome",
+  "description": "The existing evaluation-only outcome record, linked to exactly one episode and kept out of event, annotation, and classifier inputs.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["episode_id", "checkpoint", "suite", "outcome", "failure_cause", "source_hdf5_sha256", "evidence"],
+  "properties": {
+    "episode_id": {"type": "string", "minLength": 1},
+    "checkpoint": {"type": "string", "minLength": 1},
+    "suite": {"type": "string", "minLength": 1},
+    "outcome": {"enum": ["success", "failure"]},
+    "failure_cause": {"enum": ["UNKNOWN", null]},
+    "source_hdf5_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "evidence": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/evidenceReference"}}
+  },
+  "$defs": {
+    "optionalIndex": {"oneOf": [{"type": "null"}, {"type": "integer", "minimum": 0}]},
+    "evidenceReference": {
+      "type": "object", "additionalProperties": false,
+      "required": ["hdf5_sha256", "hdf5_path", "transition_index", "mapped_post_action_frame", "frame_index", "mapping_note"],
+      "properties": {
+        "hdf5_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+        "hdf5_path": {"type": "string", "minLength": 1},
+        "transition_index": {"$ref": "#/$defs/optionalIndex"},
+        "mapped_post_action_frame": {"$ref": "#/$defs/optionalIndex"},
+        "frame_index": {"$ref": "#/$defs/optionalIndex"},
+        "mapping_note": {"type": "string", "minLength": 1}
+      }
+    }
+  }
+}

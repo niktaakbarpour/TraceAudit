@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://traceaudit.local/schemas/trace_event_v1_2.schema.json",
+  "title": "TraceAudit v1.2 five-field event contract projection",
+  "description": "Backward-compatible projection of v1.1 event ID, source timestamps, event type, provenance, and explicit uncertainty state. Frozen source records are not rewritten.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["event_id", "timestamps", "event_type", "provenance", "uncertainty_flag"],
+  "properties": {
+    "event_id": {"type": "string", "pattern": "^.+:EVT:[0-9]{4}$"},
+    "timestamps": {
+      "type": "object", "additionalProperties": false,
+      "required": ["verified", "start_s", "end_s", "source_values_s_unverified"],
+      "properties": {
+        "verified": {"const": false},
+        "start_s": {"type": "null"},
+        "end_s": {"type": "null"},
+        "source_values_s_unverified": {
+          "type": "array", "minItems": 2, "maxItems": 2,
+          "items": {"type": "number"}
+        }
+      }
+    },
+    "event_type": {"enum": ["gripper_command_run", "end_effector_motion_segment", "tracked_entity_position_change"]},
+    "provenance": {
+      "type": "object", "additionalProperties": false,
+      "required": ["source_trace", "time_basis", "classification"],
+      "properties": {
+        "source_trace": {"type": "string", "minLength": 1},
+        "time_basis": {"type": "string", "minLength": 1},
+        "classification": {"type": "string", "minLength": 1},
+        "semantic_note": {"type": ["string", "null"]}
+      }
+    },
+    "uncertainty_flag": {
+      "type": "object", "additionalProperties": false,
+      "required": ["semantic_status", "evidence_link_status"],
+      "properties": {
+        "semantic_status": {"enum": ["uncertain", "not_assessed"]},
+        "evidence_link_status": {"enum": ["resolved", "not_assessed"]}
+      }
+    }
+  }
+}

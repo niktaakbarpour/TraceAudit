@@ -1,0 +1,13 @@
+cff-version: 1.2.0
+message: "If you use TraceAudit, cite this ongoing research software project."
+title: "TraceAudit: Cost-Efficient Verification of LLM Explanations for Robotic Failure Classification"
+type: software
+authors:
+  - family-names: Akbarpour
+    given-names: Nikta
+    affiliation: "York University"
+abstract: >-
+  Ongoing research software for cost-efficient verification of LLM-generated
+  explanations for robotic failure classification through evidence attribution
+  and budget-constrained auditing of multimodal execution traces.
+version: 0.1.0

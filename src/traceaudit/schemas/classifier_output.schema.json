@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://traceaudit.local/schemas/classifier_output_v0_1.schema.json",
+  "title": "TraceAudit structured classifier response",
+  "type": "object", "additionalProperties": false,
+  "required": ["schema_version", "status", "predictions", "abstain_reason"],
+  "properties": {
+    "schema_version": {"const": "traceaudit-classifier-output-v0.1"},
+    "status": {"enum": ["classified", "abstain"]},
+    "predictions": {"type": "array", "items": {"type": "object", "additionalProperties": false,
+      "required": ["label_id", "citations", "rationale"],
+      "properties": {
+        "label_id": {"type": "string", "minLength": 1, "pattern": "^[A-Za-z0-9_.-]+$"},
+        "citations": {"type": "array", "minItems": 1, "uniqueItems": true, "items": {"type": "string", "pattern": "^.+:EVT:[0-9]{4}$"}},
+        "rationale": {"type": "string", "minLength": 1}
+      }
+    }},
+    "abstain_reason": {"type": ["string", "null"]}
+  },
+  "allOf": [
+    {"if": {"properties": {"status": {"const": "classified"}}, "required": ["status"]}, "then": {"properties": {"predictions": {"minItems": 1}, "abstain_reason": {"const": null}}}},
+    {"if": {"properties": {"status": {"const": "abstain"}}, "required": ["status"]}, "then": {"properties": {"predictions": {"maxItems": 0}, "abstain_reason": {"type": "string", "minLength": 1}}}}
+  ]
+}
