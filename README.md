@@ -106,6 +106,8 @@ The API contract, fail-closed experiment gate, and synthetic fixtures are in `sr
 - `data/` and `results/`: sharing guidance only; research datasets and generated outputs are excluded.
 - `.github/workflows/`: CPU-only CI.
 
+See [`docs/public-release-readiness.md`](docs/public-release-readiness.md) for the separate ownership, data-governance, attribution, and licensing checks identified for any future public release.
+
 ## Research status
 
 | Stage | Status | Evidence and limits |
